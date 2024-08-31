@@ -11,6 +11,7 @@ bookRouter.post('/addBook', addBook);
 
 // Protected routes for only logged-in User
 bookRouter.put('/borrowBook/:bookId',auth, borrowBook);
+bookRouter.put('/returnBook/:bookId',auth, borrowBook);
 
 
 module.exports = bookRouter;

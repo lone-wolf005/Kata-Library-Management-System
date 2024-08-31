@@ -104,5 +104,57 @@ exports.borrowBook  = async (req, res) => {
     }
 };
 
+exports.returnBook = async (req, res) => {
+    try {
+        const { bookId } = req.params;
+        const userId = req.user.id;
+
+
+        // Find the book by ID
+        const book = await Book.findById(bookId);
+
+        // Check if the book exists
+        if (!book) {
+            return res.status(404).json({
+                success: false,
+                message: "Book not found"
+            });
+        }
+
+        // Check if the book is currently borrowed
+        if (book.isAvailable) {
+            return res.status(400).json({
+                success: false,
+                message: "Book is already returned or was never borrowed"
+            });
+        }
+
+        // Update the book status to available
+        book.isAvailable = true;
+        await book.save();
+
+        // Update user data by removing the book from the borrowedBooks array
+        await User.findByIdAndUpdate(userId, {
+            $pull: {
+                borrowedBooks: bookId
+            }
+        }, { new: true });
+
+        return res.status(200).json({
+            success: true,
+            data: book,
+            message: "Book returned successfully"
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            data: "Internal Server Error",
+            message: error.message
+        });
+    }
+};
+
 
 
