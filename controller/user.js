@@ -48,3 +48,63 @@ exports.registerUser = async (req, res) => {
           error: error.message });
     }
   };
+
+  exports.loginUser = async (req, res) => {
+    try {
+      const { email, password } = req.body;
+  
+      // Validation of required fields
+      if(!email || !password) {
+        return res.status(400).json({
+          success: false,
+          error: "All fields are required"
+        });
+      }
+  
+      // Check if user exists
+      const user = await User.findOne({ email });
+  
+      if(!user) {
+        return res.status(400).json({
+          success: false,
+          error: "User does not exist"
+        });
+      }
+  
+      // Compare the password
+      const isMatch = await bcrypt.compare(password, user.password);
+  
+      if(!isMatch) {
+        return res.status(400).json({
+          success: false,
+          error: "Invalid credentials"
+        });
+      }
+  
+      // Generate JWT token
+
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: "1d"
+      });
+      
+      user.token = token;
+      user.password = undefined;
+  
+      const options = {
+          expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+          httpOnly: true,
+      }
+  
+      return res.cookie("token", token, options).status(200).json({
+          success: true,
+          user,
+          message: `User Login Success`,
+        });
+  
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        error: error.message
+      });
+    }
+  };
