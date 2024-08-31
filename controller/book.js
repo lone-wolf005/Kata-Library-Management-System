@@ -42,3 +42,67 @@ exports.addBook = async (req, res) => {
         });
     }
 };
+
+exports.borrowBook  = async (req, res) => {
+    try {
+        const { bookId } = req.params;
+
+        const userId = req.user.id;
+        
+
+        
+        // Find the book by ID
+
+        const book = await Book.findById(bookId);
+
+        // Check if the book exists
+
+        if(!book) {
+            return res.status(404).json({
+                success: false,
+                message: "Book not found"
+            });
+        }
+
+        // Check if the book is available for borrowing
+        
+        if(!book.isAvailable) {
+            return res.status(400).json({
+                success: false,
+                message: "Book is not available for borrowing"
+            });
+        }
+        
+        // Update the book status to borrowed
+        
+        book.isAvailable = false;
+        await book.save();
+        
+        // update userdata 
+        // future Scope{add validation on number of books borrowed by user}
+        await User.findByIdAndUpdate({
+            _id:userId
+        }, {
+            $push:{
+                borrowedBooks:bookId
+            },
+        
+        },{new:true})
+
+        return  res.status(200).json({
+            success: true,
+            data: book,
+            message: "Book borrowed successfully"
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            data: "Internal Server Error",
+            message: error.message
+        });
+    }
+};
+
+
+
