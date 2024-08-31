@@ -1,0 +1,29 @@
+{
+  "name": "library_management",
+  "version": "1.0.0",
+  "description": "This is Library Management Project Includes CRUD Operation on Books",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "jest --watchAll",
+    "start": "nodemon index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "Jigar Thakor",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.6.0",
+    "nanoid": "^3.3.7",
+    "nodemon": "^3.1.4"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
+  }
+}
+ 
