@@ -3,6 +3,7 @@ const cookieParser = require('cookie-parser');
 const {connectDB} = require('./database/database');
 const dotenv = require('dotenv');
 const userRouter = require('./routes/user');
+const bookRouter = require('./routes/book');
 
 // creating server 
 const app =  express();
@@ -19,6 +20,7 @@ app.get('/', (req, res) => {
 
 // defining routes
 app.use('/api/v1/user', userRouter);
+app.use('/api/v1/book', bookRouter);
 // connection to database
 connectDB();
 

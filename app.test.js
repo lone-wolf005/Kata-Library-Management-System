@@ -116,3 +116,39 @@ describe("User API", () => {
                 });
         });
 });
+
+describe("Book API", () => {
+
+    it('POST /addBook ---> should return success message and book object', () => {
+        const newBook = {
+            title: "Mybook3",
+            author: "jigar",
+            publishedYear: 2024
+        };
+    
+        return request(app)
+            .post('/api/v1/book/addBook')
+            .send(newBook)
+            .expect('Content-Type', /json/)
+            .expect(201)
+            .then((response) => {
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                        success: true,                     
+                        message: expect.any(String),     
+                        data: expect.objectContaining({   
+                            ISBN: expect.any(Number),        
+                            title: newBook.title,           
+                            author: newBook.author,          
+                            publishedYear: newBook.publishedYear, 
+                            isAvailable: true,              
+                            borrowedBy: null,              
+                            _id: expect.any(String),       
+                            __v: expect.any(Number)     
+                        })
+                    })
+                );
+            });
+    });
+    
+});
