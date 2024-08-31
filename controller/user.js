@@ -49,7 +49,7 @@ exports.registerUser = async (req, res) => {
     }
   };
 
-  exports.loginUser = async (req, res) => {
+exports.loginUser = async (req, res) => {
     try {
       const { email, password } = req.body;
   
@@ -101,6 +101,22 @@ exports.registerUser = async (req, res) => {
           message: `User Login Success`,
         });
   
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        error: error.message
+      });
+    }
+  };
+
+  exports.logoutUser = async (req, res) => {
+    try {
+        return res.status(200).cookie("token","",{
+            expires:new Date (Date.now()),
+            }).json({
+                success:true,
+                message:"User Logged Out Successfully",
+            });
     } catch (error) {
       return res.status(500).json({
         success: false,

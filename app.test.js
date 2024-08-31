@@ -99,4 +99,20 @@ describe("User API", () => {
                     );
                 });
         });
+
+    it('POST /logout ---> should return success message', () => {
+            return request(app)
+    
+                .delete('/api/v1/user/logout')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .then((response) => {
+                    expect(response.body).toEqual(
+                        expect.objectContaining({
+                            success: true,
+                            message: expect.any(String)
+                        })
+                    );
+                });
+        });
 });
