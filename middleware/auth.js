@@ -4,7 +4,7 @@ const { config } = require("dotenv");
 
 config();
 
-exports.auth = async (req, res, next) => {
+exports.isAuthenticated = async (req, res, next) => {
   try {
     const token =
       req.cookies.token ||

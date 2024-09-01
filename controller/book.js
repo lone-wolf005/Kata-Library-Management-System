@@ -174,5 +174,23 @@ exports.getAllBooks = async (req, res) => {
     }
 };
 
+exports.getAllAvailableBooks = async (req, res) => {
+    try {
+        const books = await Book.find({ isAvailable: true });
+        res.status(200).json({
+            success: true,
+            data: books,
+            message: "Available books fetched successfully"
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            data: "Internal Server Error",
+            message: error.message
+        });
+    }
+};
+
 
 

@@ -237,10 +237,33 @@ describe("Book API", () => {
                                 });
 
     });
-    
-    
-    
-    
-    
+
+
+    it('GET /api/v1/book/getAllBooks ---> should return success message and list of books', () => {
+        return request(app)
+            .get('/api/v1/book/getAllAvailableBooks')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .then((response) => {
+                expect(response.body).toEqual(
+                                    expect.objectContaining({    
+                                        data:expect.arrayContaining([
+                                            expect.objectContaining(
+                                            {   
+                                                ISBN: expect.any(Number),        
+                                                title: expect.any(String),          
+                                                author: expect.any(String),         
+                                                publishedYear: expect.any(Number),
+                                                isAvailable: true,              
+                                                borrowedBy: null,              
+                                                _id: expect.any(String),       
+                                                __v: expect.any(Number)     
+                                            })
+                                            ])
+                                        })
+                                    );
+                                });
+
+    });
     
 });
