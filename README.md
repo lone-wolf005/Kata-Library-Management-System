@@ -18,7 +18,7 @@
 - ExpressJs
 - MongoDB
 - jest
-- Superjest
+- Supertest
 
 ## Getting Started
 
