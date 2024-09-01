@@ -156,5 +156,23 @@ exports.returnBook = async (req, res) => {
     }
 };
 
+exports.getAllBooks = async (req, res) => {
+    try {
+        const books = await Book.find();
+        res.status(200).json({
+            success: true,
+            data: books,
+            message: "Books fetched successfully"
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            data: "Internal Server Error",
+            message: error.message
+        });
+    }
+};
+
 
 
